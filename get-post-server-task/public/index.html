@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>File Server</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<form id="POST">
-    <input type="file" name="file">
+<form id="GET">
+    <input type="text" name="file" placeholder="filename.ext">
     <input type="submit" value="Загрузить">
 </form>
 
-<form id="GET">
-    <input type="text" name="file" placeholder="filename.ext">
+<form id="POST">
+    <div class="file-wrapper">
+        <button>Выберите файл</button>
+        <input type="file" name="file" id="file">
+    </div>
     <input type="submit" value="Загрузить">
 </form>
 

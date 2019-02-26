@@ -4,7 +4,7 @@
   "description": "",
   "main": "get-post-server-task/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node get-post-server-task/index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
     "url": "https://github.com/natrey/nodejs-practice/issues"
   },
   "homepage": "https://github.com/natrey/nodejs-practice#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "mime": "^2.4.0"
+  }
 }

@@ -46,6 +46,42 @@ http.createServer((req, res) => {
       }
       break;
 
+    case 'POST':
+      let postData = '';
+
+      req.on('data', chunk => {
+        postData += chunk;
+
+        // 1MB limit size
+        if (postData.length > 1e6) {
+          res.statusCode = 413;
+          res.end('Too long');
+        }
+      });
+
+      req.on('end', () => {
+        const filePath = path.normalize(path.join(`${__dirname}/files`, pathname));
+
+        if (fs.existsSync(filePath)) {
+          res.statusCode = 409;
+          res.end('File already exists');
+          return;
+
+        } else if (pathname.match(/\.\./) || pathname.substr(1).match(/\//)) {
+          res.statusCode = 400;
+          res.end('Bad request');
+          return;
+
+        } else {
+          fs.writeFile(filePath, postData);
+
+          res.statusCode = 200;
+          res.end('OK');
+        }
+      });
+
+      break;
+
     default:
       res.statusCode = 502;
       res.end('Not implemented');

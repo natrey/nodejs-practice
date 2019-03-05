@@ -8,18 +8,32 @@
 <body>
 <form id="GET">
     <input type="text" name="file" placeholder="filename.ext">
-    <input type="submit" value="Загрузить">
+    <input type="submit" value="GET">
 </form>
 
 <form id="POST">
-    <div class="file-wrapper">
-        <button>Выберите файл</button>
+    <div>
         <input type="file" name="file" id="file">
+        <label for="file"><span>filename.ext</span></label>
     </div>
-    <input type="submit" value="Загрузить">
+    <input type="submit" value="POST">
 </form>
 
 <script>
+  const input = document.getElementById( 'file' );
+  const label	 = input.nextElementSibling,
+  labelVal = label.innerHTML;
+
+  input.addEventListener( 'change', e => {
+    let fileName = e.target.value.split( '\\' ).pop();
+
+    if( fileName )
+    label.querySelector( 'span' ).innerHTML = fileName;
+    else
+    label.innerHTML = labelVal;
+  });
+
+
   document.onsubmit = function(event) {
     event.preventDefault();
     const form = event.target;
@@ -33,6 +47,7 @@
     switch (event.target.id) {
       case 'POST':
         xhr.open('POST', fileUrl);
+        //TODO: check if file type image, convert to base64
         xhr.send(form.file.files[0]);
         break;
       case 'GET':

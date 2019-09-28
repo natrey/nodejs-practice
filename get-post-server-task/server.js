@@ -4,12 +4,12 @@ const fs = require('fs');
 const path = require('path');
 const mime = require('mime/lite');
 
-http.createServer((req, res) => {
+const server = http.createServer((req, res) => {
   const pathname = decodeURI(url.parse(req.url).pathname);
 
   switch(req.method) {
     case 'GET':
-      if (pathname === '/') {
+      if (pathname === '/' || pathname === '/index.html') {
         fs.readFile(`${__dirname}/public/index.html`, (err, content) => {
           if (err) {
             handleError(err);
@@ -86,7 +86,13 @@ http.createServer((req, res) => {
       res.statusCode = 502;
       res.end('Not implemented');
   }
-}).listen(3000);
+});
+
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(3000);
+}
+
+module.exports = server;
 
 function handleError(err, res) {
   if (err.code === 'ENOENT') {

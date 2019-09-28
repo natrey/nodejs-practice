@@ -2,9 +2,10 @@
   "name": "nodejs-practice",
   "version": "1.0.0",
   "description": "",
-  "main": "get-post-server-task/index.js",
+  "main": "get-post-server-task/server.js",
   "scripts": {
-    "start": "node get-post-server-task/index.js"
+    "start": "node get-post-server-task/server.js",
+    "test": "export NODE_ENV=test && mocha get-post-server-task/tests/test"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,10 @@
   "homepage": "https://github.com/natrey/nodejs-practice#readme",
   "dependencies": {},
   "devDependencies": {
-    "mime": "^2.4.0"
+    "chai": "^4.2.0",
+    "mime": "^2.4.0",
+    "mocha": "^6.2.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   }
 }

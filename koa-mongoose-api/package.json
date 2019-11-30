@@ -1,0 +1,21 @@
+{
+  "name": "koa-mongoose-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@noname-land/mongoose-beautiful-unique-validation": "^1.0.2",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^7.4.0",
+    "mongoose": "^5.7.13",
+    "nodemon": "^2.0.1"
+  }
+}

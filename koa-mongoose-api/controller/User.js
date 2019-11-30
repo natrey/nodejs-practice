@@ -5,7 +5,7 @@ module.exports = {
         const users = await User.find({});
 
         if (!users) {
-            throw new Error('There was an error finding users');
+            ctx.throw(404, 'There was an error finding users');
         } else {
             ctx.body = {
                 status: 'OK',
@@ -18,8 +18,7 @@ module.exports = {
         const user = await User.findById(id);
 
         if (!user) {
-            ctx.status = 404;
-            throw new Error(`There was an error finding user by id, ${id}`);
+            ctx.throw(404, `There was an error finding user by id, ${id}`)
         } else {
             ctx.body = {
                 status: 'OK',
@@ -28,25 +27,26 @@ module.exports = {
         }
     },
     createUser: async ctx => {
+        console.log(ctx.request);
         const { displayName, email } = ctx.request.body;
+        let result = null;
 
-        if (!email) {
-            ctx.status = 400;
-            throw new Error('Please provide email field to create new user');
-        }
+        try {
+            result = await User.create({
+                displayName,
+                email,
+            });
 
-        const result = await User.create({
-            displayName,
-            email,
-        });
-
-        if (!result) {
-            throw new Error('There was an error creating user');
-        } else {
             ctx.body = {
                 status: 'OK',
                 data: result,
             };
+        } catch (err) {
+            if (err.name === 'ValidationError') {
+                ctx.throw(400, 'Please provide unique email field to create new user');
+            } else {
+                throw new Error('There was an error creating user');
+            }
         }
     },
     updateUser: async ctx => {

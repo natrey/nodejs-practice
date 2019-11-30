@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
         email: {
             type: String, // https://docs.mongodb.com/manual/reference/bson-types/index.html
             required: 'Enter an email',
-            unique: 'Two users cannot share the same email {VALUE}',
+            unique: 'Two users cannot share the same email ({VALUE})',
             validate: [{
                 validator(value) { return /^[-.\w]+@([\w-]+\.)+[\w-]{2,12}$/.test(value) },
                 msg: 'Please enter correct email.'

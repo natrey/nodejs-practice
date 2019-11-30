@@ -24,13 +24,23 @@ app.use(async (ctx, next) => {
         await next();
     } catch (err) {
         ctx.status = err.status || 500;
-        ctx.body = err.message;
+
+        if (err.status === 400) {
+            ctx.body = {
+              errors: {
+                  field: err.message,
+              },
+            };
+        } else {
+            ctx.body = err.message;
+        }
+
         ctx.app.emit('error', err, ctx);
     }
 });
 
 app.use(require('./routes').routes());
 
-app.listen(3000);
+app.listen(3000, console.log('Server listening on port: 3000'));
 
 

@@ -27,12 +27,10 @@ module.exports = {
         }
     },
     createUser: async ctx => {
-        console.log(ctx.request);
         const { displayName, email } = ctx.request.body;
-        let result = null;
 
         try {
-            result = await User.create({
+            const result = await User.create({
                 displayName,
                 email,
             });
@@ -50,28 +48,39 @@ module.exports = {
         }
     },
     updateUser: async ctx => {
-        const newData = { displayName: ctx.request.body.displayName, email: ctx.request.body.email };
+        const { displayName, email } = ctx.request.body;
+        const newData = {};
+        if (displayName) newData.displayName = displayName;
+        if (email) newData.email = email;
 
-        const result = await User.findByIdAndUpdate(ctx.query.id, newData);
+        try {
+            const result = await User.findByIdAndUpdate(ctx.params.id, newData);
 
-        if (!result) {
-            throw new Error('There was an error updating user');
-        } else {
             ctx.body = {
                 status: 'OK',
                 data: result,
             };
+        } catch (err) {
+            if (err.name === 'CastError') {
+                ctx.throw(404, 'User does not exist');
+            } else {
+                throw new Error(`There was an error updating user, ${err}`);
+            }
         }
     },
     deleteUser: async ctx => {
-        const result = await User.findByIdAndDelete(ctx.query.id);
+        try {
+            await User.findByIdAndDelete(ctx.params.id);
 
-        if (!result) {
-            throw new Error('There was an error deleting user');
-        } else {
             ctx.body = {
                 status: 'OK',
             };
+        } catch (err) {
+            if (err.name === 'CastError') {
+                ctx.throw(404, 'User does not exist');
+            } else {
+                throw new Error(`There was an error deleting user ${err}`);
+            }
         }
     },
 };

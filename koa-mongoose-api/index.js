@@ -2,6 +2,7 @@ const koa = require('koa');
 const mongoose = require('mongoose');
 const logger = require('koa-logger');
 const bodyParse = require('koa-bodyparser');
+const router = require('./routes');
 
 const app = new koa();
 
@@ -14,6 +15,7 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
+        useFindAndModify: false,
     })
     .then(() => console.log('Mongo connection created'))
     .catch(err => console.log('Mongo connection error', err));
@@ -39,7 +41,8 @@ app.use(async (ctx, next) => {
     }
 });
 
-app.use(require('./routes').routes());
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 app.listen(3000, console.log('Server listening on port: 3000'));
 
